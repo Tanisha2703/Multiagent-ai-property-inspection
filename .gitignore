@@ -1,0 +1,285 @@
+# ============================================
+# CRITICAL: NEVER COMMIT THESE FILES!
+# ============================================
+
+# Environment variables - Contains API keys!
+.env
+.env.local
+.env.*.local
+
+# ============================================
+# Python
+# ============================================
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+env.bak/
+venv.bak/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# ============================================
+# IDEs and Editors
+# ============================================
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+.vim/
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ============================================
+# Operating Systems
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# Project Specific - Generated Files
+# ============================================
+
+# Output directory - keep structure but ignore generated files
+output/*.json
+output/*.md
+output/*.pdf
+output/*.txt
+# Keep the directory structure
+!output/.gitkeep
+
+# Temporary processing files
+temp/
+tmp/
+*.tmp
+*.temp
+
+# Uploaded files (if any)
+uploads/
+uploaded_files/
+
+# ============================================
+# Streamlit
+# ============================================
+
+# Streamlit cache
+.streamlit/
+.streamlit/secrets.toml
+
+# ============================================
+# Logs and Databases
+# ============================================
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================
+# Documentation Build Files
+# ============================================
+
+# Sphinx documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# MkDocs
+site/
+
+# ============================================
+# Backup and Temporary Files
+# ============================================
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# ============================================
+# Sample/Test Files - Not committed to repository
+# ============================================
+
+# Sample PDF files (users upload their own via web interface)
+Sample Report.pdf
+Thermal Images.pdf
+Main DDR.pdf
+
+# Any other sample or test PDFs
+*sample*.pdf
+*test*.pdf
+*demo*.pdf
+
+# ============================================
+# Git
+# ============================================
+
+# Git merge files
+*.orig
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
+
+# ============================================
+# Security
+# ============================================
+
+# Private keys
+*.pem
+*.key
+*.cert
+*.crt
+
+# Secrets
+secrets.json
+secrets.yaml
+secrets.yml
+
+# ============================================
+# Node (if using any JS tools)
+# ============================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================
+# Docker (if using)
+# ============================================
+
+# Docker
+*.dockerignore
+docker-compose.override.yml
+
+# ============================================
+# Misc
+# ============================================
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Large files
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# System files
+.fuse_hidden*

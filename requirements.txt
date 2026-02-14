@@ -1,0 +1,8 @@
+pymupdf
+pillow
+langchain
+langchain-community
+langchain-groq
+pydantic
+python-dotenv
+streamlit
