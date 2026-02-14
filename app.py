@@ -53,8 +53,20 @@ st.markdown("""
 
 def initialize_system():
     """Initialize the DDR generation system"""
-    load_dotenv()
-    api_key = os.getenv("GROQ_API_KEY")
+    # Try Streamlit secrets first (for cloud deployment)
+    api_key = None
+    
+    try:
+        # Check if running on Streamlit Cloud
+        if hasattr(st, 'secrets') and 'GROQ_API_KEY' in st.secrets:
+            api_key = st.secrets["GROQ_API_KEY"]
+    except:
+        pass
+    
+    # Fall back to .env file (for local development)
+    if not api_key:
+        load_dotenv()
+        api_key = os.getenv("GROQ_API_KEY")
     
     if not api_key or api_key == "your_groq_api_key_here":
         return None, "API key not configured"
