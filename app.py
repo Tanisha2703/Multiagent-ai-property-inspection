@@ -53,29 +53,48 @@ st.markdown("""
 
 def initialize_system():
     """Initialize the DDR generation system"""
-    # Try Streamlit secrets first (for cloud deployment)
     api_key = None
     
+    # Try to get API key from Streamlit secrets (Cloud) or .env (Local)
     try:
         # Check if running on Streamlit Cloud
-        if hasattr(st, 'secrets') and 'GROQ_API_KEY' in st.secrets:
+        if "GROQ_API_KEY" in st.secrets:
             api_key = st.secrets["GROQ_API_KEY"]
     except:
-        pass
+        # Running locally, use .env file
+        load_dotenv()
+        api_key = os.getenv("GROQ_API_KEY")
     
-    # Fall back to .env file (for local development)
+    # If still no API key, try .env as fallback
     if not api_key:
         load_dotenv()
         api_key = os.getenv("GROQ_API_KEY")
     
-    if not api_key or api_key == "your_groq_api_key_here":
-        return None, "API key not configured"
+    # Validate API key
+    if not api_key or api_key.strip() == "" or api_key == "your_groq_api_key_here":
+        error_msg = """
+        ⚠️ **API Key Not Found**
+        
+        Please configure your Groq API key:
+        
+        **For Streamlit Cloud:**
+        - Go to App Settings → Secrets
+        - Add: `GROQ_API_KEY = "gsk_your_key"`
+        
+        **For Local Development:**
+        - Create `.env` file in project root
+        - Add: `GROQ_API_KEY=gsk_your_key`
+        
+        **Get Free API Key:** https://console.groq.com
+        """
+        return None, error_msg
     
+    # Initialize system
     try:
         system = DDRGenerationSystem(api_key)
         return system, None
     except Exception as e:
-        return None, str(e)
+        return None, f"Failed to initialize system: {str(e)}"
 
 def main():
     # Header
@@ -111,8 +130,8 @@ def main():
             st.success("✅ System Ready")
             st.info("🤖 Model: Llama 3.3 70B")
         else:
-            st.error(f"❌ System Error: {error}")
-            st.warning("⚠️ Please configure API key in .env file")
+            st.error("❌ Configuration Required")
+            st.markdown(error)
     
     # Main content
     col1, col2 = st.columns(2)
@@ -164,8 +183,8 @@ def main():
         # Check system
         system, error = initialize_system()
         if not system:
-            st.error(f"❌ System Error: {error}")
-            st.info("💡 Make sure you have configured your Groq API key in the .env file")
+            st.error("❌ System Not Configured")
+            st.markdown(error)
             return
         
         # Create progress bar

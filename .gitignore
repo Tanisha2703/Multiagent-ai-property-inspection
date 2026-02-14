@@ -205,8 +205,28 @@ site/
 *.swo
 
 # ============================================
+# Documentation - Keep only essential files
+# ============================================
+
+# Exclude all markdown files except essential ones
+*.md
+# But keep these essential documentation files
+!README.md
+!SETUP.md
+
+# ============================================
 # Sample/Test Files - Not committed to repository
 # ============================================
+
+# Sample PDF files (users upload their own via web interface)
+Sample Report.pdf
+Thermal Images.pdf
+Main DDR.pdf
+
+# Any other sample or test PDFs
+*sample*.pdf
+*test*.pdf
+*demo*.pdf
 
 # Sample PDF files (users upload their own via web interface)
 Sample Report.pdf
