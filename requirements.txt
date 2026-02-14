@@ -6,3 +6,5 @@ langchain-groq
 pydantic
 python-dotenv
 streamlit
+markdown
+pdfkit

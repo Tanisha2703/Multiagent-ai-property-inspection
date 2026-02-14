@@ -9,6 +9,13 @@ from dotenv import load_dotenv
 from main import DDRGenerationSystem
 import tempfile
 import time
+import markdown
+from io import BytesIO
+try:
+    import pdfkit
+    PDFKIT_AVAILABLE = True
+except:
+    PDFKIT_AVAILABLE = False
 
 # Page configuration
 st.set_page_config(
@@ -95,6 +102,88 @@ def initialize_system():
         return system, None
     except Exception as e:
         return None, f"Failed to initialize system: {str(e)}"
+
+def markdown_to_pdf_simple(markdown_text: str) -> bytes:
+    """Convert markdown to PDF using simple HTML conversion"""
+    # Convert markdown to HTML
+    html_content = markdown.markdown(markdown_text, extensions=['tables', 'fenced_code'])
+    
+    # Add CSS styling for better PDF appearance
+    styled_html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 800px;
+                margin: 40px auto;
+                padding: 20px;
+            }}
+            h1 {{
+                color: #2c3e50;
+                border-bottom: 3px solid #3498db;
+                padding-bottom: 10px;
+            }}
+            h2 {{
+                color: #34495e;
+                border-bottom: 2px solid #95a5a6;
+                padding-bottom: 8px;
+                margin-top: 30px;
+            }}
+            h3 {{
+                color: #7f8c8d;
+                margin-top: 20px;
+            }}
+            ul, ol {{
+                margin-left: 20px;
+            }}
+            li {{
+                margin-bottom: 8px;
+            }}
+            strong {{
+                color: #2c3e50;
+            }}
+            code {{
+                background-color: #f4f4f4;
+                padding: 2px 6px;
+                border-radius: 3px;
+            }}
+            table {{
+                border-collapse: collapse;
+                width: 100%;
+                margin: 20px 0;
+            }}
+            th, td {{
+                border: 1px solid #ddd;
+                padding: 12px;
+                text-align: left;
+            }}
+            th {{
+                background-color: #3498db;
+                color: white;
+            }}
+        </style>
+    </head>
+    <body>
+        {html_content}
+    </body>
+    </html>
+    """
+    
+    # Try to convert to PDF using pdfkit
+    if PDFKIT_AVAILABLE:
+        try:
+            pdf_bytes = pdfkit.from_string(styled_html, False)
+            return pdf_bytes
+        except:
+            pass
+    
+    # Fallback: return HTML as bytes (user can save as HTML and print to PDF)
+    return styled_html.encode('utf-8')
 
 def main():
     # Header
@@ -266,14 +355,39 @@ def main():
                     st.subheader("Generated DDR Report")
                     st.markdown(generated_report)
                     
-                    # Download button
-                    st.download_button(
-                        label="⬇️ Download DDR Report",
-                        data=generated_report,
-                        file_name="generated_ddr.md",
-                        mime="text/markdown",
-                        use_container_width=True
-                    )
+                    # Download buttons
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        # Markdown download
+                        st.download_button(
+                            label="⬇️ Download as Markdown",
+                            data=generated_report,
+                            file_name="generated_ddr.md",
+                            mime="text/markdown",
+                            use_container_width=True
+                        )
+                    
+                    with col2:
+                        # PDF download
+                        try:
+                            pdf_data = markdown_to_pdf_simple(generated_report)
+                            file_ext = "pdf" if PDFKIT_AVAILABLE else "html"
+                            mime_type = "application/pdf" if PDFKIT_AVAILABLE else "text/html"
+                            button_label = "⬇️ Download as PDF" if PDFKIT_AVAILABLE else "⬇️ Download as HTML"
+                            
+                            st.download_button(
+                                label=button_label,
+                                data=pdf_data,
+                                file_name=f"generated_ddr.{file_ext}",
+                                mime=mime_type,
+                                use_container_width=True
+                            )
+                            
+                            if not PDFKIT_AVAILABLE:
+                                st.info("💡 PDF generation requires wkhtmltopdf. Download HTML and print to PDF from browser.")
+                        except Exception as e:
+                            st.error(f"PDF generation error: {str(e)}")
                 
                 with tab2:
                     st.subheader("Quality Validation Results")
